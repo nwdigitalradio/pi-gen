@@ -1,1 +1,1 @@
-deb [arch=armhf,amd64] http://archive.compasslinux.org/ wilderness main
+deb [arch=armhf,amd64] http://archive.compasslinux.org/ alder main
