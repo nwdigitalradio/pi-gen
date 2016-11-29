@@ -2,9 +2,14 @@
 
 IMG_FILE="${STAGE_WORK_DIR}/${IMG_DATE}-${IMG_NAME}${IMG_SUFFIX}.img"
 
-on_chroot sh -e - <<EOF
+on_chroot << EOF
 /etc/init.d/fake-hwclock stop
+hardlink -t /usr/share/doc
 EOF
+
+if [ -d ${ROOTFS_DIR}/home/pi/.config ]; then
+	chmod 700 ${ROOTFS_DIR}/home/pi/.config
+fi
 
 rm -f ${ROOTFS_DIR}/etc/apt/apt.conf.d/51cache
 rm -f ${ROOTFS_DIR}/usr/sbin/policy-rc.d

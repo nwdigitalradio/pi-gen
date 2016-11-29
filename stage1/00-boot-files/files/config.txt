@@ -53,4 +53,6 @@
 # Additional overlays and parameters are documented /boot/overlays/README
 
 # Enable audio (loads snd_bcm2835)
-dtparam=audio=on
+# dtparam=audio=on
+
+force_turbo=1

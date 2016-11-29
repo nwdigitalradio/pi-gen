@@ -7,7 +7,7 @@ run_sub_stage()
 	for i in {00..99}; do
 		if [ -f ${i}-debconf ]; then
 			log "Begin ${SUB_STAGE_DIR}/${i}-debconf"
-			on_chroot sh -e - << EOF
+			on_chroot << EOF
 debconf-set-selections <<SELEOF
 `cat ${i}-debconf`
 SELEOF
@@ -16,9 +16,9 @@ EOF
 		fi
 		if [ -f ${i}-packages-nr ]; then
 			log "Begin ${SUB_STAGE_DIR}/${i}-packages-nr"
-			PACKAGES=`cat $i-packages-nr | tr '\n' ' '`
+			PACKAGES="$(sed -f "${SCRIPT_DIR}/remove-comments.sed" < ${i}-packages-nr)"
 			if [ -n "$PACKAGES" ]; then
-				on_chroot sh -e - << EOF
+				on_chroot << EOF
 apt-get install --no-install-recommends -y $PACKAGES
 EOF
 			fi
@@ -26,9 +26,9 @@ EOF
 		fi
 		if [ -f ${i}-packages ]; then
 			log "Begin ${SUB_STAGE_DIR}/${i}-packages"
-			PACKAGES=`cat $i-packages | tr '\n' ' '`
+			PACKAGES="$(sed -f "${SCRIPT_DIR}/remove-comments.sed" < ${i}-packages)"
 			if [ -n "$PACKAGES" ]; then
-				on_chroot sh -e - << EOF
+				on_chroot << EOF
 apt-get install -y $PACKAGES
 EOF
 			fi
@@ -42,8 +42,9 @@ EOF
 				rm -rf *-pc
 			fi
 			QUILT_PATCHES=${SUB_STAGE_DIR}/${i}-patches
-			mkdir -p ${i}-pc
-			ln -sf ${i}-pc .pc
+			SUB_STAGE_QUILT_PATCH_DIR="$(basename $SUB_STAGE_DIR)-pc"
+			mkdir -p $SUB_STAGE_QUILT_PATCH_DIR
+			ln -snf $SUB_STAGE_QUILT_PATCH_DIR .pc
 			if [ -e ${SUB_STAGE_DIR}/${i}-patches/EDIT ]; then
 				echo "Dropping into bash to edit patches..."
 				bash
@@ -68,13 +69,14 @@ EOF
 		fi
 		if [ -f ${i}-run-chroot ]; then
 			log "Begin ${SUB_STAGE_DIR}/${i}-run-chroot"
-			on_chroot sh -e - < ${i}-run-chroot
+			on_chroot < ${i}-run-chroot
 			log "End ${SUB_STAGE_DIR}/${i}-run-chroot"
 		fi
 	done
 	popd > /dev/null
 	log "End ${SUB_STAGE_DIR}"
 }
+
 
 run_stage(){
 	log "Begin ${STAGE_DIR}"
@@ -155,6 +157,10 @@ export QUILT_NO_DIFF_TIMESTAMPS=1
 export QUILT_REFRESH_ARGS="-p ab"
 
 source ${SCRIPT_DIR}/common
+source ${SCRIPT_DIR}/dependencies_check
+
+
+dependencies_check ${BASE_DIR}/depends
 
 mkdir -p ${WORK_DIR}
 log "Begin ${BASE_DIR}"
@@ -163,13 +169,16 @@ for STAGE_DIR in ${BASE_DIR}/stage*; do
 	run_stage
 done
 
-STAGE_DIR=${BASE_DIR}/export-image
-
 CLEAN=1
 for EXPORT_DIR in ${EXPORT_DIRS}; do
+	STAGE_DIR=${BASE_DIR}/export-image
 	IMG_SUFFIX=$(cat ${EXPORT_DIR}/EXPORT_IMAGE)
 	EXPORT_ROOTFS_DIR=${WORK_DIR}/$(basename ${EXPORT_DIR})/rootfs
 	run_stage
+	if [ -e ${EXPORT_DIR}/EXPORT_NOOBS ]; then
+		STAGE_DIR=${BASE_DIR}/export-noobs
+		run_stage
+	fi
 done
 
 log "End ${BASE_DIR}"
