@@ -1,4 +1,103 @@
 UNRELEASED:
+  * Raspberry Pi 3 B+ support
+  * WiFi is disabled until wireless regulatory domain is set (Pi 3 B+ only)
+    - The domain can be done through 'Raspberry Pi Configuration' (rc_gui),
+      'raspi-config' or by setting 'country=' to an appropriate ISO 3166
+      alpha2 country code in /etc/wpa_supplicant/wpa_supplicant.conf.
+  * Default wireless regulatory domain is now unset
+  * Added support to desktop for different screen sizes and resolutions,
+    including multiple preset options in Appearance Settings and pixel doubling
+    option in Raspberry Pi Configuration
+  * Version 2.1.16 of Thonny included
+  * Version 29.0.0.113 of Adobe PepperFlash player included
+  * Version 1.2.post1 of Pygame Zero included
+  * Bluetooth plugin now supports connection to Bluetooth LE HID devices
+  * Network plugin now indicates 5G-compatible APs
+  * Latest changes to Bluez ALSA service merged
+    - service now started on CLI boot as well as GUI boot
+  * Latest changes to dhcpcd networking plugin merged
+  * Improved support for running on pi-top devices
+  * Small design changes to PiX theme and icons
+  * Bug fix - hide spurious window resize handles
+  * Bug fix - Scratch 2 remote GPIO state block now works correctly
+  * Updated WiFi Firmware
+    - brcmfmac43455-sdio 7.45.154
+    - brcmfmac43430-sdio 7.45.98.38
+  * New packages:
+    - policykit-1
+    - obconf
+    - python-buttonshim python3-buttonshim
+    - python-unicornhathd  python3-unicornhathd
+    - python-pantilthat python3-pantilthat
+  * Linux kernel 4.9.80+
+  * Raspberry Pi firmware 3347884c7df574bbabeff6dca63caf686e629699
+2017-11-29:
+  * Added battery monitor plugin for taskbar - works on x86 images or first-generation Pi-Top
+  * Added cutdown mode to PCManFM file manager to reduce complexity
+  * Added ability to rename files in PCManFM by clicking name when selected
+  * Bug fix in Bluetooth ALSA module to reduce truncation of audio at end of playback
+  * Various small tweaks, bug fixes and theme modifications
+  * New kernel and firmware
+2017-09-07:
+  * Disable predictable network interface names for Ethernet devices
+  * Bug fix for keyboard settings dialog in Raspberry Pi Configuration
+  * Bug fix for crash on some videos and animations in Chromium
+  * Bug fix for taskbar crash when running RealVNC server
+  * Bug fix for reloading projects with extensions in Scratch 2
+  * Bug fix for MAC address problem in Bluetooth
+  * Simple mode and new icons in Thonny
+  * New Japanese translations in Raspberry Pi Configuration
+  * Install fonts-droid-fallback for international fonts
+2017-08-16:
+  * Based on Raspbian Stretch (Debian version 9)
+  * Version 60 of Chromium browser included
+  * Version 3.0.1 of Sonic Pi included
+  * Version 6.1.1 of RealVNC included
+  * Version 0.17.4 of NodeRED included
+  * Bluetooth audio routed via ALSA rather than Pulseaudio
+  * SenseHAT extension added to Scratch 2
+  * Various desktop applications modified to prompt for sudo password if needed
+  * lxinput control options for mouse speed simplified
+  * lxpanel plugins moved into separate packages
+  * Wireless firmware for Pi 3 and Pi 0W modified to address Broadpwn exploit
+  * Latest kernel and firmware
+  * Various small tweaks, bug fixes and theme modifications
+2017-07-05:
+  * New kernel and firmware
+  * Filesystem created without the metadata_csum feature
+2017-06-21:
+  * Scratch 2 application included
+  * Thonny Python IDE included
+  * New icons with thinner outlines
+  * Volume control more linear in behaviour
+  * Updated Flash player
+  * Updated RealVNC server and viewer
+  * Various tweaks and bugfixes
+  * New kernel and firmware
+2017-04-10:
+  * Wolfram Mathematica updated to version 11.0.1
+  * Adobe Flash Player updated to version 25.0.0.127
+  * Use PARTUUID to support USB boot
+2017-03-02:
+  * Updated kernel and firmware (final Pi Zero W support)
+  * Wolfram Mathematica updated to version 11
+  * NOOBS installs now checks for presence of 'ssh' file on the NOOBS partition.
+2017-02-16:
+  * Chromium browser updated to version 56
+  * Adobe Flash Player updated to version 24.0.0.221
+  * RealVNC Server and Viewer updated to version 6.0.2 (RealVNC Connect)
+  * Sonic Pi updated to version 2.11
+  * Node-RED updated to version 0.15.3
+  * Scratch updated to version 120117
+  * Detection of SSH enabled with default password moved into PAM
+  * Updated desktop GL driver to support use of fake KMS option
+  * Raspberry Pi Configuration and raspi-config allow setting of fixed HDMI resolution
+  * raspi-config allows enabling of serial hardware independent of serial terminal
+  * Updates to kernel and firmware
+  * Various minor bug fixes and usability and appearance tweaks
+2017-01-11:
+  * Re-release of the 2016-11-25 image with a FAT32-formatted boot partition
+2016-11-25:
   * SSH disabled by default; can be enabled by creating a file with name "ssh" in boot partition
   * Prompt for password change at boot when SSH enabled with default password unchanged
   * Adobe Flash Player included
