@@ -56,3 +56,5 @@
 # dtparam=audio=on
 
 force_turbo=1
+dtoverlay=
+dtoverlay=udrc
